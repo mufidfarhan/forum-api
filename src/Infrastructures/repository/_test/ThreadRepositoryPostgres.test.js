@@ -3,13 +3,19 @@ const NewThread = require('../../../Domains/thread/entities/NewThread');
 const AddedThread = require('../../../Domains/thread/entities/AddedThread');
 const pool = require('../../database/postgres/pool');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
+const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 
 describe('ThreadRepositoryPostgres', () => {
+  beforeAll(async () => {
+    await UsersTableTestHelper.addUser({ id: 'user-123' });
+  })
+
   afterEach(async () => {
     await ThreadTableTestHelper.cleanTable();
   });
 
   afterAll(async () => {
+    await UsersTableTestHelper.cleanTable();
     await pool.end();
   });
 
@@ -19,7 +25,7 @@ describe('ThreadRepositoryPostgres', () => {
       const newThread = new NewThread({
         title: 'A thread',
         body: 'this is a thread',
-        owner: 'dicoding',
+        owner: 'user-123',
       });
       const fakeIdGenerator = () => '123'; 
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
@@ -37,7 +43,7 @@ describe('ThreadRepositoryPostgres', () => {
       const newThread = new NewThread({
         title: 'A thread',
         body: 'this is a thread',
-        owner: 'dicoding',
+        owner: 'user-123',
       });
       const fakeIdGenerator = () => '123';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
