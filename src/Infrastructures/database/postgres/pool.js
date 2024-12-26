@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+const config = require('../../../Commons/config');
 const { Pool } = require('pg');
 
 const testConfig = {
@@ -9,6 +10,6 @@ const testConfig = {
   database: process.env.PGDATABASE_TEST,
 };
 
-const pool = process.env.NODE_ENV === 'test' ? new Pool(testConfig) : new Pool();
+const pool = process.env.NODE_ENV === 'test' ? new Pool(testConfig) : new Pool(config.database);
 
 module.exports = pool;
