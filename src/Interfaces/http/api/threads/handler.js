@@ -1,5 +1,4 @@
 const AddThreadUseCase = require('../../../../Applications/use_case/AddThreadUseCase');
-const DomainErrorTranslator = require('../../../../Commons/exceptions/DomainErrorTranslator');
 
 class ThreadsHandler {
   constructor(container) {
@@ -21,7 +20,7 @@ class ThreadsHandler {
       },
     });
     response.code(201);
-    return response
+    return response;
   };
 };
 

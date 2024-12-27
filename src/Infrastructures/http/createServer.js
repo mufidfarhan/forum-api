@@ -17,7 +17,7 @@ const createServer = async (container) => {
 
   // registrasi plugin ekternal
   await server.register([
-    { 
+    {
       plugin: Jwt,
     },
   ]);

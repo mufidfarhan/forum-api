@@ -1,8 +1,6 @@
-/* eslint-disable camelcase */
-
 exports.shorthands = undefined;
 
-exports.up = pgm => {
+exports.up = (pgm) => {
   pgm.createTable('threads', {
     id: {
       type: 'VARCHAR(50)',
@@ -11,7 +9,7 @@ exports.up = pgm => {
     title: {
       type: 'VARCHAR(50)',
       notNull: true,
-    }, 
+    },
     body: {
       type: 'TEXT',
       notNull: true,
@@ -25,6 +23,6 @@ exports.up = pgm => {
   pgm.addConstraint('threads', 'fk_threads.owner_users.id', 'FOREIGN KEY(owner) REFERENCES users(id) ON DELETE CASCADE');
 };
 
-exports.down = pgm => {
+exports.down = (pgm) => {
   pgm.dropTable('threads');
 };

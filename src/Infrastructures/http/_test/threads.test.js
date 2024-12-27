@@ -52,7 +52,7 @@ describe('HTTP server', () => {
       } = JSON.parse(auth.payload);
       /** End of getting access token */
 
-      // Action 
+      // Action
       const response = await server.inject({
         method: 'POST',
         url: '/threads',
@@ -77,9 +77,9 @@ describe('HTTP server', () => {
         body: 'This is a thread',
       };
 
-      const accessToken = 'wrong_token'
+      const accessToken = 'wrong_token';
 
-      // Action 
+      // Action
       const response = await server.inject({
         method: 'POST',
         url: '/threads',
@@ -129,7 +129,7 @@ describe('HTTP server', () => {
       } = JSON.parse(auth.payload);
       /** End of getting access token */
 
-      // Action 
+      // Action
       const response = await server.inject({
         method: 'POST',
         url: '/threads',
@@ -179,7 +179,7 @@ describe('HTTP server', () => {
       const {
         data: { accessToken },
       } = JSON.parse(auth.payload);
-      /** End of getting access token */ 
+      /** End of getting access token */
 
       // Action
       const response = await server.inject({
@@ -196,5 +196,5 @@ describe('HTTP server', () => {
       expect(responseJson.status).toEqual('fail');
       expect(responseJson.message).toEqual('tidak dapat membuat thread baru karena tipe data tidak sesuai');
     });
-  })
-})
+  });
+});

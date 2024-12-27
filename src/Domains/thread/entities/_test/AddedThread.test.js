@@ -40,4 +40,4 @@ describe('a AddedThread entities', () => {
     expect(addedThread.title).toEqual(payload.title);
     expect(addedThread.owner).toEqual(payload.owner);
   });
-})
+});

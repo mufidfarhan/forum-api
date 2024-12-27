@@ -8,7 +8,7 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 describe('ThreadRepositoryPostgres', () => {
   beforeAll(async () => {
     await UsersTableTestHelper.addUser({ id: 'user-123' });
-  })
+  });
 
   afterEach(async () => {
     await ThreadTableTestHelper.cleanTable();
@@ -27,7 +27,7 @@ describe('ThreadRepositoryPostgres', () => {
         body: 'this is a thread',
         owner: 'user-123',
       });
-      const fakeIdGenerator = () => '123'; 
+      const fakeIdGenerator = () => '123';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
@@ -56,7 +56,7 @@ describe('ThreadRepositoryPostgres', () => {
         id: 'thread-123',
         title: 'A thread',
         body: 'this is a thread',
-        owner: 'dicoding',
+        owner: 'user-123',
       }));
     });
   });

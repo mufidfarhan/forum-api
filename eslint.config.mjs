@@ -1,10 +1,17 @@
-import globals from "globals";
-import pluginJs from "@eslint/js";
+import globals from 'globals';
+import pluginJs from '@eslint/js';
 import daStyle from 'eslint-config-dicodingacademy';
- 
-exportdefault [
+
+
+/** @type {import('eslint').Linter.Config[]} */
+export default [
   daStyle,
-  {files: ["**/*.js"], languageOptions: {sourceType: "commonjs"}},
-  {languageOptions: { globals: globals.node }},
+  { files: ['**/*.js'], languageOptions: { sourceType: 'commonjs' } },
+  { languageOptions: { globals: globals.node } },
   pluginJs.configs.recommended,
+  {
+    rules: {
+      'no-undef': 'off'
+    },
+  }
 ];

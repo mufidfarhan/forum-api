@@ -6,7 +6,7 @@ const AddThreadUseCase = require('../AddThreadUseCase');
 describe('NewThreadUseCase', () => {
   it('should orchestrating the add thread action correctly', async () => {
     // Arrange
-    const userId = 'user-123'
+    const userId = 'user-123';
     const useCasePayload = {
       title: 'a thread',
       body: 'This is a thread',
