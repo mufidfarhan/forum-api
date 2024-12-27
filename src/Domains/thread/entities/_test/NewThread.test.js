@@ -5,7 +5,6 @@ describe('a AddThread entities', () => {
     // Arrange
     const payload = {
       title: 'A Thread',
-      body: 'This is a thread',
     };
 
     // Action and Assert
@@ -17,27 +16,24 @@ describe('a AddThread entities', () => {
     const payload = {
       title: 123,
       body: true,
-      owner: 'user-123',
     };
 
     // Action and Assert
     expect(() => new AddThread(payload)).toThrowError('ADD_THREAD.NOT_MEET_DATA_TYPE_SPECIFICATION');
   });
 
-  it('should create newThreadobject correctly', () => {
+  it('should create newThread object correctly', () => {
     // Arrange
     const payload = {
       title: 'A Thread',
       body: 'This is a thread',
-      owner: 'user-123',
     };
 
     // Action
-    const { title, body, owner } = new AddThread(payload);
+    const { title, body, } = new AddThread(payload);
 
     // Assert
     expect(title).toEqual(payload.title);
     expect(body).toEqual(payload.body);
-    expect(owner).toEqual(payload.owner);
   });
 });

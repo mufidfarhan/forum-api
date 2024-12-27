@@ -6,8 +6,10 @@ const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 
 describe('ThreadRepositoryPostgres', () => {
+  const userId = 'user-123';
+
   beforeAll(async () => {
-    await UsersTableTestHelper.addUser({ id: 'user-123' });
+    await UsersTableTestHelper.addUser({ id: userId });
   });
 
   afterEach(async () => {
@@ -25,16 +27,17 @@ describe('ThreadRepositoryPostgres', () => {
       const newThread = new NewThread({
         title: 'A thread',
         body: 'this is a thread',
-        owner: 'user-123',
       });
+
       const fakeIdGenerator = () => '123';
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
-      await threadRepositoryPostgres.addThread(newThread);
+      await threadRepositoryPostgres.addThread(newThread, userId);
 
       // Assert
       const threads = await ThreadTableTestHelper.findThreadById('thread-123');
+
       expect(threads).toHaveLength(1);
     });
 
@@ -49,7 +52,7 @@ describe('ThreadRepositoryPostgres', () => {
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
-      const addedThread = await threadRepositoryPostgres.addThread(newThread);
+      const addedThread = await threadRepositoryPostgres.addThread(newThread, userId);
 
       // Assert
       expect(addedThread).toStrictEqual(new AddedThread({
