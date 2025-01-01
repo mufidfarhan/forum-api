@@ -28,8 +28,8 @@ describe('ThreadRepositoryPostgres', () => {
         title: 'A thread',
         body: 'this is a thread',
       });
-
       const fakeIdGenerator = () => '123';
+
       const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
@@ -62,6 +62,10 @@ describe('ThreadRepositoryPostgres', () => {
         owner: 'user-123',
       }));
     });
+  });
+
+  describe('getThreadById function', () => {
+    // Arrange
   });
 });
 
