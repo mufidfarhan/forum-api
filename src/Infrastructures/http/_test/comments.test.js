@@ -5,61 +5,15 @@ const createServer = require('../createServer');
 const AuthenticationsTableTestHelper = require('../../../../tests/AuthenticationsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
+const RequestTestHelper = require('../../../../tests/RequestTestHelper');
 
 describe('HTTP server', () => {
   let accessToken;
   let threadId;
 
   beforeAll(async () => {
-    const server = await createServer(container);
-
-    // add user
-    await server.inject({
-      method: 'POST',
-      url: '/users',
-      payload: {
-        username: 'dicoding',
-        password: 'secret',
-        fullname: 'Dicoding Indonesia',
-      },
-    });
-
-    // login and get access token
-    const auth = await server.inject({
-      method: 'POST',
-      url: '/authentications',
-      payload: {
-        username: 'dicoding',
-        password: 'secret',
-      },
-    });
-
-    const {
-      data: { accessToken: token }
-    } = JSON.parse(auth.payload);
-
-    accessToken = token;
-
-    // add thread and get threadId
-    const thread = await server.inject({
-      method: 'POST',
-      url: '/threads',
-      payload: {
-        title: 'A thread',
-        body: 'This is a thread',
-      },
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
-
-    const {
-      data: {
-        addedThread: { id },
-      }
-    } = JSON.parse(thread.payload);
-
-    threadId = id;
+    accessToken = await RequestTestHelper.getAccessToken({ username: 'dicoding' });
+    threadId = await RequestTestHelper.getThreadId({}, accessToken);
   });
 
   afterEach(async () => {
@@ -129,15 +83,13 @@ describe('HTTP server', () => {
         content: 'a comment',
       };
 
-      const wrongAccessToken = 'wrong_token';
-
       // Action
       const response = await server.inject({
         method: 'POST',
         url: `/threads/${threadId}/comments`,
         payload: requestPayload,
         headers: {
-          Authorization: `Bearer ${wrongAccessToken}`,
+          Authorization: `Bearer ${null}`,
         },
       });
 
@@ -191,6 +143,74 @@ describe('HTTP server', () => {
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
       expect(responseJson.message).toEqual('tidak dapat menambahkan komentar karena tipe data tidak sesuai');
+    });
+  });
+
+  describe('when DELETE /threads/{threadId}/comments/{commentId}', () => {
+    let commentId;
+
+    beforeAll(async () => {
+      commentId = await RequestTestHelper.getCommentId({}, accessToken, threadId);
+    });
+
+    it('should response 200 if commentId valid', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: `/threads/${threadId}/comments/${commentId}`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+    });
+
+    it('should response 404 when thread not exist', async () => {
+      // Arrange
+      const server = await createServer(container);
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: `/threads/${null}/comments/${commentId}`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('Thread tidak ditemukan');
+    });
+
+    it('should response 403 when not the owner of the comment', async () => {
+      // Arrange
+      const server = await createServer(container);
+      const otherCommentId = await RequestTestHelper.getCommentId();
+
+      // Action
+      const response = await server.inject({
+        method: 'DELETE',
+        url: `/threads/${threadId}/comments/${otherCommentId}`,
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      // Assert
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(403);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toEqual('Anda tidak berhak mengakses resource ini');
     });
   });
 });

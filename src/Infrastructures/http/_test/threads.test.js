@@ -4,39 +4,13 @@ const container = require('../../container');
 const createServer = require('../createServer');
 const AuthenticationsTableTestHelper = require('../../../../tests/AuthenticationsTableTestHelper');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
+const RequestTestHelper = require('../../../../tests/RequestTestHelper');
 
 describe('HTTP server', () => {
   let accessToken;
 
   beforeAll(async () => {
-    const server = await createServer(container);
-
-    // add user
-    await server.inject({
-      method: 'POST',
-      url: '/users',
-      payload: {
-        username: 'dicoding',
-        password: 'secret',
-        fullname: 'Dicoding Indonesia',
-      },
-    });
-
-    // login and get access token
-    const auth = await server.inject({
-      method: 'POST',
-      url: '/authentications',
-      payload: {
-        username: 'dicoding',
-        password: 'secret',
-      },
-    });
-
-    const {
-      data: { accessToken: token }
-    } = JSON.parse(auth.payload);
-
-    accessToken = token;
+    accessToken = await RequestTestHelper.getAccessToken({ username: 'dicoding' });
   });
 
   afterEach(async () => {
