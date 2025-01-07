@@ -3,7 +3,7 @@ const container = require('../src/Infrastructures/container');
 const createServer = require('../src/Infrastructures/http/createServer');
 
 const RequestTestHelper = {
-  async getAccessToken({
+  async addUserAndLogin({
     username = 'usertest',
     password = 'secret',
     fullname = 'user test',
@@ -36,11 +36,11 @@ const RequestTestHelper = {
     return accessToken;
   },
 
-  async getThreadId({
+  async addThread({
     title = 'A thread',
     body = 'This is a thread',
   } = {}, accessToken) {
-    accessToken = accessToken || await this.getAccessToken();
+    accessToken = accessToken || await this.addUserAndLogin();
 
     const server = await createServer(container);
     const response = await server.inject({
@@ -64,11 +64,11 @@ const RequestTestHelper = {
     return threadId;
   },
 
-  async getCommentId({
+  async addComment({
     content = 'a comment',
   } = {}, accessToken, threadId) {
-    accessToken = accessToken || await this.getAccessToken();
-    threadId = threadId || await this.getThreadId();
+    accessToken = accessToken || await this.addUserAndLogin();
+    threadId = threadId || await this.addThread();
 
     const server = await createServer(container);
     const response = await server.inject({

@@ -98,6 +98,7 @@ describe('CommentRepositoryPostgres', () => {
       // Arrange
       const commentId = 'comment-123';
       await CommentsTableTestHelper.addComment({ id: commentId, userId: userId, threadId: threadId });
+
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action & Assert

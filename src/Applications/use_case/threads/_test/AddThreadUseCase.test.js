@@ -3,7 +3,7 @@ const AddedThread = require('../../../../Domains/thread/entities/AddedThread');
 const ThreadRepository = require('../../../../Domains/thread/ThreadRepository');
 const AddThreadUseCase = require('../AddThreadUseCase');
 
-describe('NewThreadUseCase', () => {
+describe('AddThreadUseCase', () => {
   it('should orchestrating the add thread action correctly', async () => {
     // Arrange
     const userId = 'user-123';

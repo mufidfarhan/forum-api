@@ -12,8 +12,8 @@ describe('HTTP server', () => {
   let threadId;
 
   beforeAll(async () => {
-    accessToken = await RequestTestHelper.getAccessToken({ username: 'dicoding' });
-    threadId = await RequestTestHelper.getThreadId({}, accessToken);
+    accessToken = await RequestTestHelper.addUserAndLogin({ username: 'dicoding' });
+    threadId = await RequestTestHelper.addThread({}, accessToken);
   });
 
   afterEach(async () => {
@@ -150,7 +150,7 @@ describe('HTTP server', () => {
     let commentId;
 
     beforeAll(async () => {
-      commentId = await RequestTestHelper.getCommentId({}, accessToken, threadId);
+      commentId = await RequestTestHelper.addComment({}, accessToken, threadId);
     });
 
     it('should response 200 if commentId valid', async () => {
@@ -195,7 +195,7 @@ describe('HTTP server', () => {
     it('should response 403 when not the owner of the comment', async () => {
       // Arrange
       const server = await createServer(container);
-      const otherCommentId = await RequestTestHelper.getCommentId();
+      const otherCommentId = await RequestTestHelper.addComment();
 
       // Action
       const response = await server.inject({

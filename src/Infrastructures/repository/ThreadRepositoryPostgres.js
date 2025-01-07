@@ -27,7 +27,30 @@ class ThreadRepositoryPostgres extends ThreadRepository {
 
   async getThreadById(threadId) {
     const query = {
-      text: 'SELECT * FROM threads WHERE id = $1',
+      text:
+        `SELECT
+          threads.id AS thread_id,
+          threads.title AS thread_title,
+          threads.body AS thread_body,
+          threads.created_at AS thread_date,
+          thread_users.username AS thread_username,
+          comments.id AS comment_id,
+          comment_users.username AS comment_username,
+          comments.created_at AS comment_date,
+          comments.content AS comment_content,
+          comments.is_delete AS comment_deleted
+        FROM
+          threads
+        LEFT JOIN
+          users AS thread_users ON threads.owner = thread_users.id
+        LEFT JOIN
+          comments ON threads.id = comments.thread_id
+        LEFT JOIN
+          users AS comment_users ON comments.owner = comment_users.id
+        WHERE
+          threads.id = $1
+        ORDER BY
+          comments.created_at ASC`,
       values: [threadId],
     };
 
@@ -37,8 +60,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
       throw new NotFoundError('Thread tidak ditemukan');
     }
 
-    const thread = result.rows[0];
-    return thread;
+    return result.rows;
   }
 }
 
