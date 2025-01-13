@@ -89,6 +89,34 @@ const RequestTestHelper = {
     } = JSON.parse(response.payload);
 
     return commentId;
+  },
+
+  async addReply({
+    content = 'a comment reply',
+  } = {}, accessToken, threadId, commentId) {
+    accessToken = accessToken || await this.addUserAndLogin();
+    threadId = threadId || await this.addThread();
+    commentId = commentId || await this.addComment();
+
+    const server = await createServer(container);
+    const response = await server.inject({
+      method: 'POST',
+      url: `/threads/${threadId}/comments/${commentId}/replies`,
+      payload: {
+        content,
+      },
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    const {
+      data: {
+        addedReply: { id: replyId },
+      }
+    } = JSON.parse(response.payload);
+
+    return replyId;
   }
 };
 

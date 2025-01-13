@@ -34,25 +34,53 @@ class ThreadRepositoryPostgres extends ThreadRepository {
           threads.body AS thread_body,
           threads.created_at AS thread_date,
           thread_users.username AS thread_username,
-          comments.id AS comment_id,
-          comment_users.username AS comment_username,
-          comments.created_at AS comment_date,
-          comments.content AS comment_content,
-          comments.is_delete AS comment_deleted
+          comments.id AS comment_id
         FROM
           threads
         LEFT JOIN
           users AS thread_users ON threads.owner = thread_users.id
         LEFT JOIN
-          comments ON threads.id = comments.thread_id
-        LEFT JOIN
-          users AS comment_users ON comments.owner = comment_users.id
+          comments AS comments ON threads.id = comments.thread_id AND comments.id LIKE 'comment-%'
         WHERE
           threads.id = $1
         ORDER BY
           comments.created_at ASC`,
       values: [threadId],
     };
+
+    // `SELECT
+    //       threads.id AS thread_id,
+    //       threads.title AS thread_title,
+    //       threads.body AS thread_body,
+    //       threads.created_at AS thread_date,
+    //       thread_users.username AS thread_username,
+    //       comments.id AS comment_id,
+    //       comments.content AS comment_content,
+    //       comment_users.username AS comment_username,
+    //       comments.created_at AS comment_date,
+    //       comments.is_delete AS comment_delete,
+    //       replies.id AS reply_id,
+    //       replies.content AS reply_content,
+    //       reply_users.username AS reply_username,
+    //       replies.created_at AS reply_date,
+    //       replies.is_delete AS reply_deleted
+    //     FROM
+    //       threads
+    //     LEFT JOIN
+    //       users AS thread_users ON threads.owner = thread_users.id
+    //     LEFT JOIN
+    //       comments AS comments ON threads.id = comments.thread_id AND comments.id LIKE 'comment-%'
+    //     LEFT JOIN
+    //       users AS comment_users ON comments.owner = comment_users.id
+    //     LEFT JOIN
+    //       comments AS replies ON comments.id = replies.parent_id AND replies.id LIKE 'reply-%'
+    //     LEFT JOIN
+    //       users AS reply_users ON replies.owner = reply_users.id
+    //     WHERE
+    //       threads.id = $1
+    //     ORDER BY
+    //       comments.created_at ASC,
+    //       replies.created_at ASC`,
 
     const result = await this._pool.query(query);
 

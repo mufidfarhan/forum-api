@@ -33,12 +33,13 @@ describe('CommentRepositoryPostgres', () => {
       const newComment = new NewComment({
         content: 'a comment',
       });
+      const objective = 'comment';
       const fakeIdGenerator = () => '123';
 
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
-      await commentRepositoryPostgres.addComment(newComment, userId, threadId);
+      await commentRepositoryPostgres.addComment(newComment, objective, userId, threadId);
 
       // Assert
       const comments = await CommentsTableTestHelper.findCommentById('comment-123');
@@ -50,11 +51,12 @@ describe('CommentRepositoryPostgres', () => {
       const newComment = new NewComment({
         content: 'a comment',
       });
+      const objective = 'comment';
       const fakeIdGenerator = () => '123';
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, fakeIdGenerator);
 
       // Action
-      const addedComment = await commentRepositoryPostgres.addComment(newComment, userId, threadId);
+      const addedComment = await commentRepositoryPostgres.addComment(newComment, objective, userId, threadId);
 
       // Assert
       expect(addedComment).toStrictEqual(new AddedComment({
@@ -82,6 +84,30 @@ describe('CommentRepositoryPostgres', () => {
     });
   });
 
+  describe('getCommentById function', () => {
+    it('should throw NotFoundError when comment not found', async () => {
+      // Arrange
+      const commentId = 'comment-123';
+      await CommentsTableTestHelper.addComment({ id: commentId, userId: userId, threadId: threadId });
+
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.getCommentById('wrong-id')).rejects.toThrowError(NotFoundError);
+    });
+
+    it('should not throw error when comment found', async () => {
+      // Arrange
+      const commentId = 'comment-123';
+      await CommentsTableTestHelper.addComment({ id: commentId, userId: userId, threadId: threadId });
+
+      const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(commentRepositoryPostgres.getCommentById(commentId)).resolves.not.toThrowError(NotFoundError);
+    });
+  });
+
   describe('verifyCommentOwner function', () => {
     it('should throw NotFoundError when comment not found', async () => {
       // Arrange
@@ -91,7 +117,7 @@ describe('CommentRepositoryPostgres', () => {
       const commentRepositoryPostgres = new CommentRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(commentRepositoryPostgres.verifyCommentOwner('wrong-id', userId)).rejects.toThrowError(NotFoundError);
+      await expect(commentRepositoryPostgres.verifyCommentOwner('wrong-id')).rejects.toThrowError(NotFoundError);
     });
 
     it('should throw AuthorizationError when not the owner of the comment', async () => {

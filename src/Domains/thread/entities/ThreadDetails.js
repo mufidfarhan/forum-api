@@ -18,7 +18,7 @@ class ThreadDetails {
       throw new Error('THREAD_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    if (typeof id !== 'string' || typeof title !== 'string' || typeof body !== 'string' || typeof date !== 'string' || typeof username !== 'string' || !Array.isArray(comments)) {
+    if (typeof id !== 'string' || typeof title !== 'string' || typeof body !== 'string' || typeof date !== 'string' || typeof username !== 'string' || typeof comments !== 'object') {
       throw new Error('THREAD_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }

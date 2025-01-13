@@ -1,27 +1,26 @@
 /* eslint-disable camelcase */
-class CommentDetails {
+class ReplyDetails {
   constructor(payload) {
     this._verifyPayload(payload);
 
-    const { id, username, date, content, replies } = payload;
+    const { id, username, date, content } = payload;
 
     this.id = id;
-    this.username = username;
-    this.date = date;
-    this.replies = replies;
     this.content = content;
+    this.date = date;
+    this.username = username;
   }
 
   _verifyPayload({ id, username, date, content }) {
 
     if (!id || !username || !date || !content) {
-      throw new Error('COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
+      throw new Error('REPLY_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
     if (typeof id !== 'string' || typeof username !== 'string' || typeof date !== 'string' || typeof content !== 'string') {
-      throw new Error('COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
+      throw new Error('REPLY_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }
 }
 
-module.exports = CommentDetails;
+module.exports = ReplyDetails;
