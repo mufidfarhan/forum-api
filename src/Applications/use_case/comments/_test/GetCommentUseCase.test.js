@@ -131,7 +131,7 @@ describe('GetCommentUseCase', () => {
         }),
         new ReplyDetails({
           id: 'reply-789',
-          content: '**komentar telah dihapus**',
+          content: '**balasan telah dihapus**',
           date: '2025-01-01',
           username: 'dicoding',
         }),

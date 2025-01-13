@@ -15,7 +15,7 @@ class GetCommentUseCase {
         username: row.reply_username,
         date: row.reply_date,
         content: row.reply_deleted
-          ? '**komentar telah dihapus**' : row.reply_content,
+          ? '**balasan telah dihapus**' : row.reply_content,
       }))
       : [];
 

@@ -24,7 +24,6 @@ class AddCommentUseCase {
 
   async addCommentReply(newComment, userId, threadId, commentId) {
     await this._commentRepository.getCommentById(commentId);
-
     return this._commentRepository.addComment(newComment, 'reply', userId, threadId, commentId);
   }
 }

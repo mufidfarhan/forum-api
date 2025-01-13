@@ -8,6 +8,7 @@ class CommentsHandler {
     this.postCommentHandler = this.postCommentHandler.bind(this);
     this.deleteCommentHandler = this.deleteCommentHandler.bind(this);
     this.postCommentReplyHandler = this.postCommentReplyHandler.bind(this);
+    this.deleteCommentReplyHandler = this.deleteCommentReplyHandler.bind(this);
   }
 
   async postCommentHandler(request, h) {
@@ -61,20 +62,20 @@ class CommentsHandler {
     return response;
   }
 
-  // async deleteCommentReplyHandler(request, h) {
-  //   const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
+  async deleteCommentReplyHandler(request, h) {
+    const deleteCommentUseCase = this._container.getInstance(DeleteCommentUseCase.name);
 
-  //   const { id: credentialId } = request.auth.credentials;
-  //   const { threadId, commentId, replyId } = request.params;
+    const { id: credentialId } = request.auth.credentials;
+    const { threadId, commentId, replyId } = request.params;
 
-  //   await deleteCommentUseCase.execute(credentialId, threadId, commentId, replyId);
+    await deleteCommentUseCase.execute(credentialId, threadId, commentId, replyId);
 
-  //   const response = h.response({
-  //     status: 'success',
-  //   });
-  //   response.code(200);
-  //   return response;
-  // }
+    const response = h.response({
+      status: 'success',
+    });
+    response.code(200);
+    return response;
+  }
 }
 
 module.exports = CommentsHandler;
