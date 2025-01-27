@@ -12,13 +12,12 @@ class CommentDetails {
     this.content = content;
   }
 
-  _verifyPayload({ id, username, date, content }) {
-
-    if (!id || !username || !date || !content) {
+  _verifyPayload({ id, username, date, content, replies }) {
+    if (!id || !username || !date || !content || !replies) {
       throw new Error('COMMENT_DETAILS.NOT_CONTAIN_NEEDED_PROPERTY');
     }
 
-    if (typeof id !== 'string' || typeof username !== 'string' || typeof date !== 'string' || typeof content !== 'string') {
+    if (typeof id !== 'string' || typeof username !== 'string' || typeof date !== 'string' || typeof content !== 'string' || typeof replies !== 'object') {
       throw new Error('COMMENT_DETAILS.NOT_MEET_DATA_TYPE_SPECIFICATION');
     }
   }

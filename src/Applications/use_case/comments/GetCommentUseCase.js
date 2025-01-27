@@ -7,10 +7,10 @@ class GetCommentUseCase {
   }
 
   async execute(commentId) {
-    const data = await this._commentRepository.getCommentById(commentId);
+    const comments = await this._commentRepository.getCommentById(commentId);
 
-    const replies = (data.length >= 1 && data[0].reply_id)
-      ? data.map((row) => new ReplyDetails({
+    const replies = (comments.length >= 1 && comments[0].reply_id)
+      ? comments.map((row) => new ReplyDetails({
         id: row.reply_id,
         username: row.reply_username,
         date: row.reply_date,
@@ -20,12 +20,12 @@ class GetCommentUseCase {
       : [];
 
     const comment = new CommentDetails({
-      id: data[0].comment_id,
-      username: data[0].comment_username,
-      date: data[0].comment_date,
+      id: comments[0].comment_id,
+      username: comments[0].comment_username,
+      date: comments[0].comment_date,
       replies: JSON.parse(JSON.stringify(replies)),
-      content: data[0].comment_deleted
-        ? '**komentar telah dihapus**' : data[0].comment_content,
+      content: comments[0].comment_deleted
+        ? '**komentar telah dihapus**' : comments[0].comment_content,
     });
 
     return comment;

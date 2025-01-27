@@ -75,7 +75,7 @@ class CommentRepositoryPostgres extends CommentRepository {
     return result.rows;
   }
 
-  async verifyCommentOwner(commentId, userId) {
+  async verifyCommentAvailability(commentId) {
     const query = {
       text: 'SELECT * FROM comments WHERE id = $1',
       values: [commentId],
@@ -86,10 +86,17 @@ class CommentRepositoryPostgres extends CommentRepository {
     if (!result.rows.length) {
       throw new NotFoundError('Komentar tidak ditemukan');
     }
+  }
 
-    const comment = result.rows[0];
+  async verifyCommentOwner(commentId, userId) {
+    const query = {
+      text: 'SELECT * FROM comments WHERE id = $1 AND owner = $2',
+      values: [commentId, userId],
+    };
 
-    if (comment.owner !== userId) {
+    const result = await this._pool.query(query);
+
+    if (!result.rows.length) {
       throw new AuthorizationError('Anda tidak berhak mengakses resource ini');
     }
   }

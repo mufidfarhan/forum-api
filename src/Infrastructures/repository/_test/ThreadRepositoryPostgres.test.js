@@ -6,6 +6,7 @@ const pool = require('../../database/postgres/pool');
 const ThreadRepositoryPostgres = require('../ThreadRepositoryPostgres');
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const NotFoundError = require('../../../Commons/exceptions/NotFoundError');
+const CommentsTableTestHelper = require('../../../../tests/CommentsTableTestHelper');
 
 describe('ThreadRepositoryPostgres', () => {
   const userId = 'user-123';
@@ -68,48 +69,74 @@ describe('ThreadRepositoryPostgres', () => {
   });
 
   describe('getThreadById function', () => {
-    it('should return thread details correctly', async () => {
-      // Arrange
-      const mockQueryResult = [
-        {
-          thread_id: 'thread-123',
-          thread_title: 'A Thread',
-          thread_body: 'A thread body',
-          thread_date: '2025-01-05T08:00:00.000Z',
-          thread_username: 'dicoding',
-          comment_id: 'comment-123',
-          comment_username: 'johndoe',
-          comment_content: 'A comment content',
-        },
-      ];
-
-      const mockPool = {
-        query: jest.fn().mockResolvedValue({ rows: mockQueryResult }),
-      };
-
-      const threadRepositoryPostgres = new ThreadRepositoryPostgres(mockPool, {});
-
-      // Action
-      const threadDetails = await threadRepositoryPostgres.getThreadById('thread-123');
-
-      // Assert
-      expect(threadDetails).toMatchObject(mockQueryResult);
-    });
-
     it('should throw NotFoundError when thread is not found', async () => {
       // Arrange
-      const mockQueryResult = { rows: [] };
-
-      const mockPool = {
-        query: jest.fn().mockResolvedValue(mockQueryResult),
-      };
-
-      const threadRepositoryPostgres = new ThreadRepositoryPostgres(mockPool);
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
 
       // Action & Assert
-      await expect(threadRepositoryPostgres.getThreadById('thread-123'))
-        .rejects
-        .toThrowError(NotFoundError);
+      await expect(threadRepositoryPostgres.getThreadById('wrong-id'))
+        .rejects.toThrowError(NotFoundError);
+    });
+
+    it('should return thread data correctly', async () => {
+      // Arrange
+      await ThreadTableTestHelper.addThread({
+        id: 'thread-234',
+        title: 'A Thread',
+        body: 'A thread body',
+        owner: userId,
+        createdAt: '2025-01-01',
+        updatedAt: '2025-01-01',
+      });
+
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        userId: userId,
+        threadId: 'thread-234',
+        content: 'a comment',
+        isDelete: false,
+        parentId: null,
+        createdAt: '2025-01-01',
+        updatedAt: '2025-01-01',
+      });
+
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      // Action
+      const thread = await threadRepositoryPostgres.getThreadById('thread-234');
+
+      // Assert
+      expect(thread).toEqual([
+        {
+          thread_id: 'thread-234',
+          thread_title: 'A Thread',
+          thread_body: 'A thread body',
+          thread_date: expect.any(String),
+          thread_username: 'dicoding',
+          comment_id: 'comment-123',
+        }
+      ]);
+    });
+  });
+
+  describe('verifyThreadAvailability function', () => {
+    it('should throw NotFoundError when thread is not found', async () => {
+      // Arrange
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(threadRepositoryPostgres.verifyThreadAvailability('wrong-id')).rejects.toThrowError(NotFoundError);
+    });
+
+    it('should not throw error when thread found', async () => {
+      // Arrange
+      const threadId = 'thread-123';
+      await ThreadTableTestHelper.addThread({ id: threadId, userId: userId });
+
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+
+      // Action & Assert
+      await expect(threadRepositoryPostgres.verifyThreadAvailability(threadId)).resolves.not.toThrowError(NotFoundError);
     });
   });
 });

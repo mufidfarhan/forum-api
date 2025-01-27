@@ -14,7 +14,8 @@ describe('DeleteCommentUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
 
     /** mocking needed function */
-    mockThreadRepository.getThreadById = jest.fn().mockImplementation(() => Promise.resolve());
+    mockThreadRepository.verifyThreadAvailability = jest.fn().mockImplementation(() => Promise.resolve());
+    mockCommentRepository.verifyCommentAvailability = jest.fn().mockImplementation(() => Promise.resolve());
     mockCommentRepository.verifyCommentOwner = jest.fn().mockImplementation(() => Promise.resolve());
     mockCommentRepository.deleteComment = jest.fn().mockImplementation(() => Promise.resolve());
 
@@ -28,7 +29,8 @@ describe('DeleteCommentUseCase', () => {
     await deleteCommentUseCase.execute(userId, threadId, commentId);
 
     // Assert
-    expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
+    expect(mockThreadRepository.verifyThreadAvailability).toBeCalledWith(threadId);
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(commentId);
     expect(mockCommentRepository.verifyCommentOwner).toBeCalledWith(commentId, userId);
     expect(mockCommentRepository.deleteComment).toBeCalledWith(commentId);
   });
@@ -45,7 +47,8 @@ describe('DeleteCommentUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
 
     /** mocking needed function */
-    mockThreadRepository.getThreadById = jest.fn().mockImplementation(() => Promise.resolve());
+    mockThreadRepository.verifyThreadAvailability = jest.fn().mockImplementation(() => Promise.resolve());
+    mockCommentRepository.verifyCommentAvailability = jest.fn().mockImplementation(() => Promise.resolve());
     mockCommentRepository.verifyCommentOwner = jest.fn().mockImplementation(() => Promise.resolve());
     mockCommentRepository.deleteComment = jest.fn().mockImplementation(() => Promise.resolve());
 
@@ -59,7 +62,8 @@ describe('DeleteCommentUseCase', () => {
     await deleteCommentUseCase.execute(userId, threadId, commentId, replyId);
 
     // Assert
-    expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
+    expect(mockThreadRepository.verifyThreadAvailability).toBeCalledWith(threadId);
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(replyId);
     expect(mockCommentRepository.verifyCommentOwner).toBeCalledWith(replyId, userId);
     expect(mockCommentRepository.deleteComment).toBeCalledWith(replyId);
   });
