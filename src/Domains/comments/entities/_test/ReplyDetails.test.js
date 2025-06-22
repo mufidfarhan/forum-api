@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 const ReplyDetails = require('../ReplyDetails');
 
 describe('a ReplyDetails entities', () => {

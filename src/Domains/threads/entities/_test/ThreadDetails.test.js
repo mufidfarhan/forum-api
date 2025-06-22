@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 const ThreadDetails = require('../ThreadDetails');
 
 describe('a ThreadDetails entities', () => {

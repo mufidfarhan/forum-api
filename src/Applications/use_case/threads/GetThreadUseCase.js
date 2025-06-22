@@ -1,4 +1,4 @@
-const ThreadDetails = require('../../../Domains/thread/entities/ThreadDetails');
+const ThreadDetails = require('../../../Domains/threads/entities/ThreadDetails');
 const CommentDetails = require('../../../Domains/comments/entities/CommentDetails');
 const ReplyDetails = require('../../../Domains/comments/entities/ReplyDetails');
 

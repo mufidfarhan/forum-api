@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 class ThreadDetails {
   constructor(payload) {
     this._verifyPayload(payload);

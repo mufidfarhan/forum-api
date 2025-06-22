@@ -6,7 +6,7 @@ const AuthenticationsTableTestHelper = require('../../../../tests/Authentication
 const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const RequestTestHelper = require('../../../../tests/RequestTestHelper');
 
-describe('HTTP server', () => {
+describe('/threads endpoint', () => {
   let accessToken;
 
   beforeAll(async () => {

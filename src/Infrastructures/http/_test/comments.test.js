@@ -7,7 +7,7 @@ const UsersTableTestHelper = require('../../../../tests/UsersTableTestHelper');
 const ThreadsTableTestHelper = require('../../../../tests/ThreadsTableTestHelper');
 const RequestTestHelper = require('../../../../tests/RequestTestHelper');
 
-describe('HTTP server', () => {
+describe('/comments endpoint', () => {
   let accessToken;
   let threadId;
 

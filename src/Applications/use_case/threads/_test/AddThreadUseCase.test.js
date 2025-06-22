@@ -1,6 +1,6 @@
-const NewThread = require('../../../../Domains/thread/entities/NewThread');
-const AddedThread = require('../../../../Domains/thread/entities/AddedThread');
-const ThreadRepository = require('../../../../Domains/thread/ThreadRepository');
+const NewThread = require('../../../../Domains/threads/entities/NewThread');
+const AddedThread = require('../../../../Domains/threads/entities/AddedThread');
+const ThreadRepository = require('../../../../Domains/threads/ThreadRepository');
 const AddThreadUseCase = require('../AddThreadUseCase');
 
 describe('AddThreadUseCase', () => {

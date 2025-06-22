@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 const CommentDetails = require('../CommentDetails');
 
 describe('a CommentDetails entities', () => {
