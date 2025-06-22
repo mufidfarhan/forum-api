@@ -17,6 +17,7 @@ forum-api/
 │   └── utils/         # Utilitas dan helper
 ├── tests/             # Pengujian dengan Jest
 ├── .editorconfig      # Konfigurasi editor
+├── .env               # Variabel lingkungan untuk production
 ├── .gitignore         # File dan folder yang diabaikan Git
 ├── .test.env          # Variabel lingkungan untuk pengujian
 ├── eslint.config.mjs  # Konfigurasi ESLint
@@ -38,7 +39,7 @@ forum-api/
     ```
     
 3. Konfigurasi Lingkungan\
-Buat file .env di direktori root dengan konfigurasi berikut:
+Buat file .env di direktori root dengan contoh konfigurasi berikut:
     ```
     # Server
     HOST=localhost
