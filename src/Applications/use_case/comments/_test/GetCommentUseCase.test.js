@@ -3,6 +3,7 @@ const CommentDetails = require('../../../../Domains/comments/entities/CommentDet
 const ReplyDetails = require('../../../../Domains/comments/entities/ReplyDetails');
 const CommentRepository = require('../../../../Infrastructures/repository/CommentRepositoryPostgres');
 const GetCommentUseCase = require('../GetCommentUseCase');
+const NotFoundError = require('../../../../Commons/exceptions/NotFoundError');
 
 describe('GetCommentUseCase', () => {
   it('should orchestrating the get comment action correctly when there are replies', async () => {
@@ -39,6 +40,7 @@ describe('GetCommentUseCase', () => {
     const mockCommentRepository = new CommentRepository();
 
     /** mocking needed function */
+    mockCommentRepository.verifyCommentAvailability = jest.fn().mockImplementation(() => Promise.resolve());
     mockCommentRepository.getCommentById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockCommentData));
 
@@ -72,6 +74,7 @@ describe('GetCommentUseCase', () => {
     const commentDetails = await getCommentUseCase.execute(commentId);
 
     // Assert
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(commentId);
     expect(mockCommentRepository.getCommentById).toBeCalledWith(commentId);
     expect(commentDetails).toEqual(mockCommentDetails);
   });
@@ -110,6 +113,7 @@ describe('GetCommentUseCase', () => {
     const mockCommentRepository = new CommentRepository();
 
     /** mocking needed function */
+    mockCommentRepository.verifyCommentAvailability = jest.fn().mockImplementation(() => Promise.resolve());
     mockCommentRepository.getCommentById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockCommentData));
 
@@ -143,6 +147,7 @@ describe('GetCommentUseCase', () => {
     const commentDetails = await getCommentUseCase.execute(commentId);
 
     // Assert
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(commentId);
     expect(mockCommentRepository.getCommentById).toBeCalledWith(commentId);
     expect(commentDetails).toEqual(mockCommentDetails);
   });
@@ -169,6 +174,7 @@ describe('GetCommentUseCase', () => {
     const mockCommentRepository = new CommentRepository();
 
     /** mocking needed function */
+    mockCommentRepository.verifyCommentAvailability = jest.fn().mockImplementation(() => Promise.resolve());
     mockCommentRepository.getCommentById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockCommentData));
 
@@ -189,6 +195,7 @@ describe('GetCommentUseCase', () => {
     const commentDetails = await getCommentUseCase.execute(commentId);
 
     // Assert
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(commentId);
     expect(mockCommentRepository.getCommentById).toBeCalledWith(commentId);
     expect(commentDetails).toEqual(mockCommentDetails);
   });
@@ -215,6 +222,7 @@ describe('GetCommentUseCase', () => {
     const mockCommentRepository = new CommentRepository();
 
     /** mocking needed function */
+    mockCommentRepository.verifyCommentAvailability = jest.fn().mockImplementation(() => Promise.resolve());
     mockCommentRepository.getCommentById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockCommentData));
 
@@ -235,7 +243,31 @@ describe('GetCommentUseCase', () => {
     const commentDetails = await getCommentUseCase.execute(commentId);
 
     // Assert
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(commentId);
     expect(mockCommentRepository.getCommentById).toBeCalledWith(commentId);
     expect(commentDetails).toEqual(mockCommentDetails);
+  });
+
+  it('should throw error when comment is not found', async () => {
+    // Arrange
+    const commentId = 'wrong-id';
+
+    const mockCommentRepository = new CommentRepository();
+
+    mockCommentRepository.verifyCommentAvailability = jest.fn()
+      .mockImplementation(() => {
+        throw new NotFoundError('Thread tidak ditemukan');
+      });
+
+    const getCommentUseCase = new GetCommentUseCase({
+      commentRepository: mockCommentRepository,
+    });
+
+    // Action
+    await expect(getCommentUseCase.execute(commentId))
+      .rejects.toThrowError(NotFoundError);
+
+    // Assert
+    expect(mockCommentRepository.verifyCommentAvailability).toBeCalledWith(commentId);
   });
 });

@@ -9,6 +9,7 @@ class GetThreadUseCase {
   }
 
   async execute(threadId) {
+    await this._threadRepository.verifyThreadAvailability(threadId);
     const threads = await this._threadRepository.getThreadById(threadId);
 
     const comments = (threads.length >= 1 && threads[0].comment_id)

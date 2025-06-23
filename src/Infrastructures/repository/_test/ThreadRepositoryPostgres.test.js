@@ -69,15 +69,6 @@ describe('ThreadRepositoryPostgres', () => {
   });
 
   describe('getThreadById function', () => {
-    it('should throw NotFoundError when thread is not found', async () => {
-      // Arrange
-      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
-
-      // Action & Assert
-      await expect(threadRepositoryPostgres.getThreadById('wrong-id'))
-        .rejects.toThrowError(NotFoundError);
-    });
-
     it('should return thread data correctly', async () => {
       // Arrange
       await ThreadTableTestHelper.addThread({

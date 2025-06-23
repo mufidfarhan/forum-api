@@ -7,6 +7,7 @@ class GetCommentUseCase {
   }
 
   async execute(commentId) {
+    await this._commentRepository.verifyCommentAvailability(commentId);
     const comments = await this._commentRepository.getCommentById(commentId);
 
     const replies = (comments.length >= 1 && comments[0].reply_id)

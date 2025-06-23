@@ -5,6 +5,7 @@ const CommentRepository = require('../../../../Domains/comments/CommentRepositor
 const GetThreadUseCase = require('../GetThreadUseCase');
 const CommentDetails = require('../../../../Domains/comments/entities/CommentDetails');
 const ReplyDetails = require('../../../../Domains/comments/entities/ReplyDetails');
+const NotFoundError = require('../../../../Commons/exceptions/NotFoundError');
 
 describe('GetThreadUseCase', () => {
   it('should orchestrating the get thread action correctly when there are comments', async () => {
@@ -78,6 +79,7 @@ describe('GetThreadUseCase', () => {
     const mockCommentRepository = new CommentRepository();
 
     /** mocking needed function */
+    mockThreadRepository.verifyThreadAvailability = jest.fn().mockImplementation(() => Promise.resolve());
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockThreadsFromDb));
     mockCommentRepository.getCommentById = jest.fn()
@@ -130,6 +132,7 @@ describe('GetThreadUseCase', () => {
     const threadDetails = await getThreadUseCase.execute(threadId);
 
     // Assert
+    expect(mockThreadRepository.verifyThreadAvailability).toBeCalledWith(threadId);
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
     expect(mockCommentRepository.getCommentById).toBeCalledWith('comment-456');
     expect(mockCommentRepository.getCommentById).toBeCalledWith('comment-789');
@@ -157,6 +160,7 @@ describe('GetThreadUseCase', () => {
     const mockCommentRepository = new CommentRepository();
 
     /** mocking needed function */
+    mockThreadRepository.verifyThreadAvailability = jest.fn().mockImplementation(() => Promise.resolve());
     mockThreadRepository.getThreadById = jest.fn()
       .mockImplementation(() => Promise.resolve(mockThreadsFromDb));
 
@@ -179,7 +183,33 @@ describe('GetThreadUseCase', () => {
     const threadDetails = await getThreadUseCase.execute(threadId);
 
     // Assert
+    expect(mockThreadRepository.verifyThreadAvailability).toBeCalledWith(threadId);
     expect(mockThreadRepository.getThreadById).toBeCalledWith(threadId);
     expect(threadDetails).toEqual(mockThreadDetails);
+  });
+
+  it('should throw error when thread is not found', async () => {
+    // Arrange
+    const threadId = 'wrong-id';
+
+    const mockThreadRepository = new ThreadRepository();
+    const mockCommentRepository = new CommentRepository();
+
+    mockThreadRepository.verifyThreadAvailability = jest.fn()
+      .mockImplementation(() => {
+        throw new NotFoundError('Thread tidak ditemukan');
+      });
+
+    const getThreadUseCase = new GetThreadUseCase({
+      threadRepository: mockThreadRepository,
+      commentRepository: mockCommentRepository,
+    });
+
+    // Action
+    await expect(getThreadUseCase.execute(threadId))
+      .rejects.toThrowError(NotFoundError);
+
+    // Assert
+    expect(mockThreadRepository.verifyThreadAvailability).toBeCalledWith(threadId);
   });
 });
