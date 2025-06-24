@@ -13,7 +13,7 @@ class AddCommentUseCase {
 
     if (!commentId) {
       return this._addNewComment(newComment, userId, threadId);
-    };
+    }
 
     return this._addCommentReply(newComment, userId, threadId, commentId);
   }

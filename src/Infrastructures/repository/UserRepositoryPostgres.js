@@ -81,7 +81,7 @@ class UserRepositoryPostgres extends UserRepository {
     }
 
     return result.rows[0];
-  };
+  }
 
 }
 

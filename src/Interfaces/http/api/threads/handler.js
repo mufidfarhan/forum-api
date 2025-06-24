@@ -24,7 +24,7 @@ class ThreadsHandler {
     });
     response.code(201);
     return response;
-  };
+  }
 
   async getThreadByIdHandler(request, h) {
     const getThreadUseCase = this._container.getInstance(GetThreadUseCase.name);
@@ -42,6 +42,6 @@ class ThreadsHandler {
     response.code(200);
     return response;
   }
-};
+}
 
 module.exports = ThreadsHandler;
