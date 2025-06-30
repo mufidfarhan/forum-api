@@ -16,11 +16,13 @@ describe('GetCommentUseCase', () => {
         comment_username: 'dicoding',
         comment_date: '2025-01-01',
         comment_deleted: false,
+        comment_like_count: '0',
         reply_id: 'reply-456',
         reply_content: 'a comment reply',
         reply_username: 'john',
         reply_date: '2025-01-01',
         reply_deleted: false,
+        reply_like_count: '0'
       },
       {
         comment_id: 'comment-123',
@@ -28,11 +30,13 @@ describe('GetCommentUseCase', () => {
         comment_username: 'dicoding',
         comment_date: '2025-01-01',
         comment_deleted: false,
+        comment_like_count: '0',
         reply_id: 'reply-789',
         reply_content: 'second comment reply',
         reply_username: 'dicoding',
         reply_date: '2025-01-01',
         reply_deleted: false,
+        reply_like_count: '0'
       },
     ];
 
@@ -59,15 +63,18 @@ describe('GetCommentUseCase', () => {
           content: 'a comment reply',
           date: '2025-01-01',
           username: 'john',
+          likeCount: 0,
         }),
         new ReplyDetails({
           id: 'reply-789',
           content: 'second comment reply',
           date: '2025-01-01',
           username: 'dicoding',
+          likeCount: 0,
         }),
       ],
       content: 'a comment',
+      likeCount: 0,
     });
 
     // Action
@@ -89,11 +96,13 @@ describe('GetCommentUseCase', () => {
         comment_username: 'dicoding',
         comment_date: '2025-01-01',
         comment_deleted: false,
+        comment_like_count: '0',
         reply_id: 'reply-456',
         reply_content: 'a comment reply',
         reply_username: 'john',
         reply_date: '2025-01-01',
         reply_deleted: false,
+        reply_like_count: '0',
       },
       {
         comment_id: 'comment-123',
@@ -101,11 +110,13 @@ describe('GetCommentUseCase', () => {
         comment_username: 'dicoding',
         comment_date: '2025-01-01',
         comment_deleted: false,
+        comment_like_count: '0',
         reply_id: 'reply-789',
         reply_content: 'second comment reply',
         reply_username: 'dicoding',
         reply_date: '2025-01-01',
         reply_deleted: true,
+        reply_like_count: '0',
       },
     ];
 
@@ -132,15 +143,18 @@ describe('GetCommentUseCase', () => {
           content: 'a comment reply',
           date: '2025-01-01',
           username: 'john',
+          likeCount: 0,
         }),
         new ReplyDetails({
           id: 'reply-789',
           content: '**balasan telah dihapus**',
           date: '2025-01-01',
           username: 'dicoding',
+          likeCount: 0,
         }),
       ],
       content: 'a comment',
+      likeCount: 0,
     });
 
     // Action
@@ -162,11 +176,13 @@ describe('GetCommentUseCase', () => {
         comment_username: 'dicoding',
         comment_date: '2025-01-01',
         comment_deleted: false,
+        comment_like_count: '0',
         reply_id: null,
         reply_content: null,
         reply_username: null,
         reply_date: null,
         reply_deleted: null,
+        reply_like_count: null,
       },
     ];
 
@@ -189,6 +205,7 @@ describe('GetCommentUseCase', () => {
       date: '2025-01-01',
       replies: [],
       content: 'a comment',
+      likeCount: 0,
     });
 
     // Action
@@ -210,11 +227,13 @@ describe('GetCommentUseCase', () => {
         comment_username: 'dicoding',
         comment_date: '2025-01-01',
         comment_deleted: true,
+        comment_like_count: '0',
         reply_id: null,
         reply_content: null,
         reply_username: null,
         reply_date: null,
         reply_deleted: null,
+        reply_like_count: null,
       },
     ];
 
@@ -237,6 +256,7 @@ describe('GetCommentUseCase', () => {
       date: '2025-01-01',
       replies: [],
       content: '**komentar telah dihapus**',
+      likeCount: 0,
     });
 
     // Action

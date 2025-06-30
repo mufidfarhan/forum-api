@@ -50,7 +50,6 @@ describe('CommentLikeRepositoryPostgres', () => {
         userId: userId,
         commentId: commentId,
         createdAt: '2025-01-01',
-        updatedAt: '2025-01-01',
       });
 
       const payload = {
@@ -69,7 +68,6 @@ describe('CommentLikeRepositoryPostgres', () => {
         user_id: 'user-123',
         comment_id: 'comment-123',
         created_at: '2025-01-01',
-        updated_at: '2025-01-01',
       }]);
     })
   })
@@ -98,7 +96,6 @@ describe('CommentLikeRepositoryPostgres', () => {
         userId: userId,
         commentId: commentId,
         createdAt: '2025-01-01',
-        updatedAt: '2025-01-01',
       });
 
       const payload = {

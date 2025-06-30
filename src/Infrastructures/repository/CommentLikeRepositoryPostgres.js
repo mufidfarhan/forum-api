@@ -24,11 +24,10 @@ class CommentLikeRepositoryPostgres extends CommentLikeRepository {
     const { userId, commentId } = payload;
     const id = `like-${this._idGenerator()}`;
     const createdAt = new Date().toISOString();
-    const updatedAt = createdAt;
 
     const query = {
-      text: 'INSERT INTO comment_likes VALUES($1, $2, $3, $4, $5)',
-      values: [id, userId, commentId, createdAt, updatedAt],
+      text: 'INSERT INTO comment_likes VALUES($1, $2, $3, $4)',
+      values: [id, userId, commentId, createdAt],
     }
 
     return await this._pool.query(query)

@@ -20,10 +20,6 @@ exports.up = (pgm) => {
       type: 'TEXT',
       notNull: true,
     },
-    updated_at: {
-      type: 'TEXT',
-      notNull: true,
-    },
   });
 
   pgm.addConstraint('comment_likes', 'fk_comment_likes.user_id_users.id', 'FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE');

@@ -20,6 +20,7 @@ describe('a CommentDetails entities', () => {
       date: '2024-04-04',
       content: 'a comment',
       replies: [],
+      likeCount: 0,
     };
 
     // Action & Assert
@@ -34,6 +35,7 @@ describe('a CommentDetails entities', () => {
       date: '2024-04-04',
       content: 'a comment',
       replies: [],
+      likeCount: 0,
     };
 
     // Action
@@ -45,5 +47,6 @@ describe('a CommentDetails entities', () => {
     expect(commentDetails.date).toEqual(payload.date);
     expect(commentDetails.content).toEqual(payload.content);
     expect(commentDetails.replies).toEqual(payload.replies);
+    expect(commentDetails.likeCount).toEqual(payload.likeCount);
   });
 });

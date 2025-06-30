@@ -38,6 +38,7 @@ class GetThreadUseCase {
         date: row.reply_date,
         content: row.reply_deleted
           ? '**balasan telah dihapus**' : row.reply_content,
+        likeCount: Number(row.reply_like_count),
       }))
       : [];
 
@@ -48,6 +49,7 @@ class GetThreadUseCase {
       replies: replies,
       content: comment[0].comment_deleted
         ? '**komentar telah dihapus**' : comment[0].comment_content,
+      likeCount: Number(comment[0].comment_like_count),
     });
   }
 }
