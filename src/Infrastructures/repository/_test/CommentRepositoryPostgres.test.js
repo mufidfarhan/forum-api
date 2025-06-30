@@ -111,11 +111,13 @@ describe('CommentRepositoryPostgres', () => {
           comment_content: 'a comment',
           comment_username: 'dicoding',
           comment_deleted: false,
+          comment_like_count: '0',
           reply_id: null,
           reply_content: null,
           reply_username: null,
           reply_date: null,
           reply_deleted: null,
+          reply_like_count: '0',
         }
       ]);
     });

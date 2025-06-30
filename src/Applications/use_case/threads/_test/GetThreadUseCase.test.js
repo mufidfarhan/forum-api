@@ -39,11 +39,13 @@ describe('GetThreadUseCase', () => {
           comment_username: 'dicoding',
           comment_date: '2025-01-01',
           comment_deleted: false,
+          comment_like_count: '0',
           reply_id: 'reply-456',
           reply_content: 'a comment reply',
           reply_username: 'john',
           reply_date: '2025-01-01',
           reply_deleted: false,
+          reply_like_count: '0',
         },
         {
           comment_id: 'comment-456',
@@ -51,11 +53,13 @@ describe('GetThreadUseCase', () => {
           comment_username: 'dicoding',
           comment_date: '2025-01-01',
           comment_deleted: false,
+          comment_like_count: '0',
           reply_id: 'reply-789',
           reply_content: 'a comment reply',
           reply_username: 'dicoding',
           reply_date: '2025-01-01',
           reply_deleted: true,
+          reply_like_count: '0',
         },
       ],
       'comment-789': [
@@ -65,11 +69,13 @@ describe('GetThreadUseCase', () => {
           comment_username: 'dicoding',
           comment_date: '2025-01-01',
           comment_deleted: true,
+          comment_like_count: '0',
           reply_id: null,
           reply_content: null,
           reply_username: null,
           reply_date: null,
           reply_deleted: null,
+          reply_like_count: null,
         },
       ]
     };
@@ -108,15 +114,18 @@ describe('GetThreadUseCase', () => {
               content: 'a comment reply',
               date: '2025-01-01',
               username: 'john',
+              likeCount: 0,
             }),
             new ReplyDetails({
               id: 'reply-789',
               content: '**balasan telah dihapus**',
               date: '2025-01-01',
               username: 'dicoding',
+              likeCount: 0,
             }),
           ],
           content: 'a comment',
+          likeCount: 0,
         }),
         new CommentDetails({
           id: 'comment-789',
@@ -124,6 +133,7 @@ describe('GetThreadUseCase', () => {
           date: '2025-01-01',
           replies: [],
           content: '**komentar telah dihapus**',
+          likeCount: 0,
         }),
       ]
     });

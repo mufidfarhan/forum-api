@@ -18,7 +18,8 @@ describe('a ReplyDetails entities', () => {
       id: 123,
       username: true,
       date: '2024-04-04',
-      content: 'a comment reply'
+      content: 'a comment reply',
+      likeCount: 0,
     };
 
     // Action & Assert
@@ -31,7 +32,8 @@ describe('a ReplyDetails entities', () => {
       id: 'comment-123',
       username: 'dicoding',
       date: '2024-04-04',
-      content: 'a comment reply'
+      content: 'a comment reply',
+      likeCount: 0,
     };
 
     // Action
@@ -42,5 +44,6 @@ describe('a ReplyDetails entities', () => {
     expect(replyDetails.username).toEqual(payload.username);
     expect(replyDetails.date).toEqual(payload.date);
     expect(replyDetails.content).toEqual(payload.content);
+    expect(replyDetails.likeCount).toEqual(payload.likeCount);
   });
 });

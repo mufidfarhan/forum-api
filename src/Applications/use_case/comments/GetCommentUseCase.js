@@ -17,6 +17,7 @@ class GetCommentUseCase {
         date: row.reply_date,
         content: row.reply_deleted
           ? '**balasan telah dihapus**' : row.reply_content,
+        likeCount: Number(row.reply_like_count),
       }))
       : [];
 
@@ -27,6 +28,7 @@ class GetCommentUseCase {
       replies: JSON.parse(JSON.stringify(replies)),
       content: comments[0].comment_deleted
         ? '**komentar telah dihapus**' : comments[0].comment_content,
+      likeCount: Number(comments[0].comment_like_count),
     });
 
     return comment;

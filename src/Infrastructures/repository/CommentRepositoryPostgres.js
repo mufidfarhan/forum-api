@@ -45,24 +45,45 @@ class CommentRepositoryPostgres extends CommentRepository {
           comment_users.username AS comment_username,
           comments.created_at AS comment_date,
           comments.is_delete AS comment_deleted,
+          COUNT(DISTINCT cl.id) AS comment_like_count,
           replies.id AS reply_id,
           replies.content AS reply_content,
           reply_users.username AS reply_username,
           replies.created_at AS reply_date,
-          replies.is_delete AS reply_deleted
+          replies.is_delete AS reply_deleted,
+          COUNT(DISTINCT rl.id) AS reply_like_count
         FROM
           comments
+
         LEFT JOIN
           users AS comment_users ON comments.owner = comment_users.id
+        LEFT JOIN
+          comment_likes AS cl ON cl.comment_id = comments.id
+
         LEFT JOIN
           comments AS replies ON comments.id = replies.parent_id AND replies.id LIKE 'reply-%'
         LEFT JOIN
           users AS reply_users ON replies.owner = reply_users.id
+        LEFT JOIN
+          comment_likes AS rl ON rl.comment_id = replies.id
+
         WHERE
           comments.id = $1
+        GROUP BY
+          comments.id,
+          comment_users.username,
+          comments.content,
+          comments.created_at,
+          comments.is_delete,
+          replies.id,
+          replies.content,
+          reply_users.username,
+          replies.created_at,
+          replies.is_delete
         ORDER BY
           comments.created_at ASC,
-          replies.created_at ASC`,
+          replies.created_at ASC
+        `,
       values: [commentId],
     };
 

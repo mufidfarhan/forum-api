@@ -35,6 +35,10 @@ DomainErrorTranslator._directories = {
     new InvariantError('tidak dapat menambahkan komentar karena properti yang dibutuhkan tidak ada'),
   'NEW_COMMENT.NOT_MEET_DATA_TYPE_SPECIFICATION':
     new InvariantError('tidak dapat menambahkan komentar karena tipe data tidak sesuai'),
+  'COMMENT_LIKES.NOT_CONTAIN_NEEDED_PROPERTY':
+    new InvariantError('tidak dapat menambahkan suka karena properti yang dibutuhkan tidak ada'),
+  'COMMENT_LIKES.NOT_MEET_DATA_TYPE_SPECIFICATION':
+    new InvariantError('tidak dapat menambahkan suka karena tipe data tidak sesuai'),
 };
 
 module.exports = DomainErrorTranslator;
