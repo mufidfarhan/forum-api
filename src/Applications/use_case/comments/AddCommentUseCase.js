@@ -11,11 +11,11 @@ class AddCommentUseCase {
 
     await this._threadRepository.verifyThreadAvailability(threadId);
 
-    if (!commentId) {
-      return this._addNewComment(newComment, userId, threadId);
+    if (commentId) {
+      return this._addCommentReply(newComment, userId, threadId, commentId);
     }
-
-    return this._addCommentReply(newComment, userId, threadId, commentId);
+    
+    return this._addNewComment(newComment, userId, threadId);
   }
 
   async _addNewComment(newComment, userId, threadId) {

@@ -31,6 +31,14 @@ const routes = (handler) => ([
       auth: 'forumapp_jwt',
     },
   },
+  {
+    method: 'PUT',
+    path: '/threads/{threadId}/comments/{commentId}/likes',
+    handler: handler.putCommentLikeHandler,
+    options: {
+      auth: 'forumapp_jwt',
+    },
+  },
 ]);
 
 module.exports = routes;
