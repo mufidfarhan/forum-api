@@ -1,5 +1,5 @@
 # Forum API
-**Forum API** adalah sebuah proyek backend yang dibangun menggunakan JavaScript, dirancang untuk menyediakan layanan API bagi aplikasi forum diskusi. Proyek ini mengikuti struktur modular dan dilengkapi dengan pengujian untuk memastikan keandalan dan skalabilitasnya.
+**Forum API** adalah sebuah proyek backend yang dibangun menggunakan JavaScript dengan framework Express.js, dirancang untuk menyediakan layanan API bagi aplikasi forum diskusi. Proyek ini mengikuti struktur modular dan dilengkapi dengan pengujian untuk memastikan keandalan dan skalabilitasnya.
 
 ## Fitur
 - CRUD Threads: Membuat, membaca, memperbarui, dan menghapus thread diskusi.

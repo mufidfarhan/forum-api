@@ -9,38 +9,38 @@ class ThreadsHandler {
     this.getThreadByIdHandler = this.getThreadByIdHandler.bind(this);
   }
 
-  async postThreadHandler(request, h) {
-    const addThreadUseCase = this._container.getInstance(AddThreadUseCase.name);
+  async postThreadHandler(req, res, next) {
+    try {
+      const addThreadUseCase = this._container.getInstance(AddThreadUseCase.name);
+      const { id: credentialId } = req.auth.credentials;
+      const addedThread = await addThreadUseCase.execute(req.body, credentialId);
 
-    const { id: credentialId } = request.auth.credentials;
-
-    const addedThread = await addThreadUseCase.execute(request.payload, credentialId);
-
-    const response = h.response({
-      status: 'success',
-      data: {
-        addedThread,
-      },
-    });
-    response.code(201);
-    return response;
+      res.status(201).json({
+        status: 'success',
+        data: {
+          addedThread,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
   }
 
-  async getThreadByIdHandler(request, h) {
-    const getThreadUseCase = this._container.getInstance(GetThreadUseCase.name);
+  async getThreadByIdHandler(req, res, next) {
+    try {
+      const getThreadUseCase = this._container.getInstance(GetThreadUseCase.name);
+      const { threadId } = req.params;
+      const thread = await getThreadUseCase.execute(threadId);
 
-    const { threadId } = request.params;
-
-    const thread = await getThreadUseCase.execute(threadId);
-
-    const response = h.response({
-      status: 'success',
-      data: {
-        thread,
-      },
-    });
-    response.code(200);
-    return response;
+      res.json({
+        status: 'success',
+        data: {
+          thread,
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
   }
 }
 

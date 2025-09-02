@@ -8,26 +8,26 @@ class JwtTokenManager extends AuthenticationTokenManager {
   }
 
   async createAccessToken(payload) {
-    return this._jwt.generate(payload, process.env.ACCESS_TOKEN_KEY);
+    return this._jwt.sign(payload, process.env.ACCESS_TOKEN_KEY, {
+      expiresIn: parseInt(process.env.ACCESS_TOKEN_AGE || '3600'),
+    });
   }
 
   async createRefreshToken(payload) {
-    return this._jwt.generate(payload, process.env.REFRESH_TOKEN_KEY);
+    return this._jwt.sign(payload, process.env.REFRESH_TOKEN_KEY);
   }
 
   async verifyRefreshToken(token) {
     try {
-      const artifacts = this._jwt.decode(token);
-      this._jwt.verify(artifacts, process.env.REFRESH_TOKEN_KEY);
-    // eslint-disable-next-line no-unused-vars
+      this._jwt.verify(token, process.env.REFRESH_TOKEN_KEY);
     } catch (error) {
       throw new InvariantError('refresh token tidak valid');
     }
   }
 
   async decodePayload(token) {
-    const artifacts = this._jwt.decode(token);
-    return artifacts.decoded.payload;
+    const decoded = this._jwt.decode(token);
+    return decoded;
   }
 }
 

@@ -5,7 +5,7 @@ const { createContainer } = require('instances-container');
 // external agency
 const { nanoid } = require('nanoid');
 const bcrypt = require('bcrypt');
-const Jwt = require('@hapi/jwt');
+const jwt = require('jsonwebtoken');
 const pool = require('./database/postgres/pool');
 
 // service (repository, helper, manager, etc)
@@ -84,7 +84,7 @@ container.register([
     parameter: {
       dependencies: [
         {
-          concrete: Jwt.token,
+          concrete: jwt,
         },
       ],
     },
